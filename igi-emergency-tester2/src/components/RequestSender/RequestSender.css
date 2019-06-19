@@ -1,0 +1,27 @@
+.RequestSender{
+    border: 1px solid blue;
+}
+
+.TheUrl {
+    display: flex;
+    margin: 20px;
+}
+
+.TheUrl input {
+    width: 400px;
+    margin-left: 10px;
+    /*margin: 10px;*/
+}
+
+.RequestSender select {
+    margin: 20px;
+    width: 200px;
+}
+
+.RequestSender button {
+    margin: 10px;
+}
+
+.UrlSendingWrapper {
+    display: flex;
+}
