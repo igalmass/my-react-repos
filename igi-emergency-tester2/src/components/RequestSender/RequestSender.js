@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './RequestSender.css';
+import '../UI/Button/Button.css';
 import axios from 'axios';
 
 
@@ -20,7 +21,9 @@ class RequestSender extends Component {
         const options = Object.keys(this.possibleRequests).map(
             curKey =>
                 <option
-                value={curKey} key={curKey} defaultValue={curKey=this.state.selectedRequestId}>{curKey}
+                    value={curKey}
+                    key={curKey}
+                    defaultValue={curKey == this.state.selectedRequestId}>{curKey}
             </option>);
 
         const dropDown = (<select onChange={this.onRequestSelectionChange}>
@@ -72,7 +75,7 @@ class RequestSender extends Component {
                                 value={this.possibleRequests[this.state.selectedRequestId]} readOnly
                                 />
                     </div>
-                    <button type="button" onClick={this.onSendButtonClicked}>Send request</button>
+                    <button className="myButton" type="button" onClick={this.onSendButtonClicked}>Send request</button>
                 </div>
                 {/*<div>*/}
                 {/*    <p>for display only: The URL: {this.state.theUrl}</p>*/}

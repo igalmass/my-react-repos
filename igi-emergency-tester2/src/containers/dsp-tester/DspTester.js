@@ -1,30 +1,28 @@
 import React, {Component} from 'react';
-import TextDisplayer from '../../components/TextDisplayer';
+import TextDisplayer from '../../components/TextDisplayer/TextDisplayer';
 import RequestSender from "../../components/RequestSender/RequestSender";
 import './DspTester.css';
 
 class DspTester extends Component {
 
     state = {
-        // theUrl: "The URL comes here",
-        requestText: 'default request text',
-        responseText: 'default response text'
-    }
+        requestText: JSON.stringify({sampleKey1: 'val1', sampleKey2: 'val2'}, null, 4),
+        responseText: 'default response text',
+    };
 
     setResponse = (newResponse) => {
-        debugger;
         this.setState({responseText: newResponse});
-    }
+    };
 
-    // setTheUrl = (newUrl) => {
-    //     this.setState({theUrl: newUrl});
-    // };
+    onRequestTextChanged = (newText) => {
+        this.setState({requestText: newText});
+    };
 
     render() {
         return (
             <div className="DspTester">
                 <RequestSender setResponse={this.setResponse} />
-                <TextDisplayer title="The Request:">{this.state.requestText}</TextDisplayer>
+                <TextDisplayer title="The Request:" onTextChanged={this.onRequestTextChanged}>{this.state.requestText}</TextDisplayer>
                 <TextDisplayer title="The Response:">{this.state.responseText}</TextDisplayer>
             </div>);
     }

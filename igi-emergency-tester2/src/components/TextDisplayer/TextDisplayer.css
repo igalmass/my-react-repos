@@ -1,0 +1,17 @@
+.TextDisplayer {
+    border: 1px solid green;
+}
+
+.TextDisplayer h3 {
+    margin: 10px;
+}
+
+.TextDisplayer textarea {
+    width: 80%;
+    margin: 10px;
+}
+
+.TextDisplayer button {
+    margin: 10px;
+}
+
