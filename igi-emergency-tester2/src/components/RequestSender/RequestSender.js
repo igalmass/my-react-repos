@@ -7,7 +7,7 @@ import axios from 'axios';
 class RequestSender extends Component {
     state = {
         selectedRequestId: "verifyAddress",
-        theUrl: null
+        theUrl: null,
     };
 
     possibleRequests = {
@@ -38,10 +38,34 @@ class RequestSender extends Component {
     };
 
     onSendButtonClicked = () => {
+        switch (this.state.selectedRequestId) {
+            case "helloTest":
+                this.executeGetRequest();
+                break;
+            default:
+                this.executePostRequest();
+                break;
+        }
+
+    };
+
+    executePostRequest() {
         const url = this.possibleRequests[this.state.selectedRequestId];
-        axios.get(url,
-            { headers: {'Access-Control-Allow-Origin': '*',
-                                    "content-type": 'application/json'}})
+        let requestBody = null;
+        try {
+            requestBody = JSON.parse(this.props.requestText);
+        } catch (e) {
+            alert(`The request test is invalid json: ${e}`);
+            return;
+        }
+        axios.post(url,
+            requestBody,
+            {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    "content-type": 'application/json'
+                }
+            })
             .then(
                 response => {
                     let responseText = "got response successfully";
@@ -58,7 +82,37 @@ class RequestSender extends Component {
                     debugger;
                     this.props.setResponse(error.message ? error.message : "Got error !");
                 });
-    };
+    }
+
+
+
+    executeGetRequest() {
+        const url = this.possibleRequests[this.state.selectedRequestId];
+        axios.get(url,
+            {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    "content-type": 'application/json'
+                }
+            })
+            .then(
+                response => {
+                    let responseText = "got response successfully";
+                    if (response && response.data) {
+                        responseText = JSON.stringify(response.data);
+                    }
+
+                    console.log(`got response ${response}`);
+                    this.props.setResponse(responseText);
+                }
+            )
+            .catch(
+                error => {
+                    debugger;
+                    this.props.setResponse(error.message ? error.message : "Got error !");
+                });
+    }
+
 
 
     render() {

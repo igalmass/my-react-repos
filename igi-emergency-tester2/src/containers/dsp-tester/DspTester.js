@@ -5,8 +5,16 @@ import './DspTester.css';
 
 class DspTester extends Component {
 
+    getDummyAddress = () => {
+        return {
+            country: 'USA',
+            line1: 'minesota 8'
+        }
+    };
+
     state = {
-        requestText: JSON.stringify({sampleKey1: 'val1', sampleKey2: 'val2'}, null, 4),
+        requestText: JSON.stringify(
+            this.getDummyAddress(), null, 4),
         responseText: 'default response text',
     };
 
@@ -18,12 +26,16 @@ class DspTester extends Component {
         this.setState({requestText: newText});
     };
 
+    onResponseTextChanged = (newText) => {
+        this.setState({responseText: newText});
+    }
+
     render() {
         return (
             <div className="DspTester">
-                <RequestSender setResponse={this.setResponse} />
+                <RequestSender setResponse={this.setResponse} requestText={this.state.requestText}/>
                 <TextDisplayer title="The Request:" onTextChanged={this.onRequestTextChanged}>{this.state.requestText}</TextDisplayer>
-                <TextDisplayer title="The Response:">{this.state.responseText}</TextDisplayer>
+                <TextDisplayer title="The Response:" onTextChanged={this.onResponseTextChanged}>{this.state.responseText}</TextDisplayer>
             </div>);
     }
 }
