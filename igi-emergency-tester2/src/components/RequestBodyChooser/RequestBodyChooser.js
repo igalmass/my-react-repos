@@ -4,10 +4,10 @@ import React, {Component} from 'react';
 
 class RequestBodyChooser extends Component {
     state = {
-        selectedRequestId: 'addressWithoutCity'
+        selectedRequestBodyId: 'addressWithoutCity'
     }
 
-    allPossibleRequests = {
+    allPossibleRequestBodys = {
         addressWithoutCity: {
             country: "USA",
             line1: "minesota 8"
@@ -19,17 +19,31 @@ class RequestBodyChooser extends Component {
         }
     }
 
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        if (this.state.selectedRequestBodyId !== nextState.selectedRequestBodyId){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    onRequestBodySelectionChange = (event) => {
+        this.setState({selectedRequestId: event.target.value});
+        const newText = this.allPossibleRequestBodys[this.state.selectedRequestBodyId];
+        this.props.onRequestTextChanged(newText);
+    };
 
 
 
     getDropdownList() {
-        const options = Object.keys(this.allPossibleRequests).map(
+        const options = Object.keys(this.allPossibleRequestBodys).map(
             curKey => <option
                 value={curKey}
                 key={curKey}
                 defaultValue={curKey == this.state.selectedRequestId}>{curKey}
             </option>);
-        const dropDown = (<select onChange={this.onRequestSelectionChange}>
+        const dropDown = (<select onChange={this.onRequestBodySelectionChange}>
             {options}
         </select>);
 

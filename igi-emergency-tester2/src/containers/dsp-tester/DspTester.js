@@ -45,7 +45,7 @@ class DspTester extends Component {
         return (
             <div className="DspTester">
                 <RequestSender setResponse={this.setResponse} requestText={this.state.requestText}/>
-                <RequestBodyChooser/>
+                {/*<RequestBodyChooser onRequestTextChanged={this.onRequestTextChanged()}/>*/}
                 <TextDisplayer title="The Request:" onTextChanged={this.onRequestTextChanged}>{this.state.requestText}</TextDisplayer>
                 <TextDisplayer title="The Response:" onTextChanged={this.onResponseTextChanged}>{this.state.responseText}</TextDisplayer>
             </div>);
