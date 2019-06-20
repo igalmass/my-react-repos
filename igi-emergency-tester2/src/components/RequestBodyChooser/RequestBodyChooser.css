@@ -1,0 +1,9 @@
+.RequestBodyChooser {
+    border: 1px solid green;
+    background-color: #5b6178;
+    margin: 10px;
+}
+
+.RequestBodyChooser select {
+    margin: 10px;
+}

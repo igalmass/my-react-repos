@@ -29,10 +29,15 @@ const textDisplayer = (props) => {
         props.onTextChanged(newText);
     }
 
+    function onClearTextButtonClicked() {
+        props.onTextChanged("");
+    }
+
     return (<div className="TextDisplayer">
                 <div style={{display: 'flex'}}>
                     <h3>{props.title}</h3>
                     <button className="myButton" onClick={onBeautifyButtonClicked}>Beautify</button>
+                    <button className="myButton" onClick={onClearTextButtonClicked}>Clear</button>
                 </div>
                 <textarea rows='10' cols='200' value={props.children} onChange={onTextChanged}/>
             </div>
