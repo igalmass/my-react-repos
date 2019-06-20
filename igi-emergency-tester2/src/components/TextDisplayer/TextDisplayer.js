@@ -18,6 +18,8 @@ const textDisplayer = (props) => {
             const jsonObj = JSON.parse(props.children);
             const formatted = JSON.stringify(jsonObj, null, 4);
             props.onTextChanged(formatted);
+        } else {
+            alert('invalid JSON !');
         }
     }
 
