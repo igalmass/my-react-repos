@@ -11,7 +11,7 @@ const textDisplayer = (props) => {
         } catch (e) {
             return false;
         }
-    }
+    };
 
     const onBeautifyButtonClicked = () => {
         if (isJsonText(props.children)){
@@ -21,7 +21,7 @@ const textDisplayer = (props) => {
         } else {
             alert('invalid JSON !');
         }
-    }
+    };
 
     const onTextChanged = (event) => {
         const newText = event.target.value;
@@ -31,8 +31,7 @@ const textDisplayer = (props) => {
 
     const onClearTextButtonClicked = () => {
         props.onTextChanged("");
-    }
-
+    };
 
     function getTextareaToRender() {
         let style = {};

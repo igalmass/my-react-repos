@@ -1,5 +1,6 @@
 import './RequestBodyChooser.css'
 import React, {Component} from 'react';
+import TextDisplayer from "../TextDisplayer/TextDisplayer";
 
 
 class RequestBodyChooser extends Component {
@@ -13,39 +14,27 @@ class RequestBodyChooser extends Component {
             line1: "minesota 8"
         },
         goodAddress: {
-            country: "USA",
-            zip: "10001",
-            city: "New York"
+            line1: "20 W 30th St",
+            city: "New York",
+            stateORprovince: "NY",
+            postalCode: "10001"
         }
     }
-
-    shouldComponentUpdate(nextProps, nextState, nextContext) {
-        if (this.state.selectedRequestBodyId !== nextState.selectedRequestBodyId){
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    componentDidMount() {
-        //  todo: add here
-    }
-
 
     onRequestBodySelectionChange = (event) => {
-        this.setState({selectedRequestId: event.target.value});
-        const newText = this.allPossibleRequestBodys[this.state.selectedRequestBodyId];
-        this.props.onRequestTextChanged(newText);
+        const newValue = event.target.value;
+        this.setState({selectedRequestId: newValue});
+        const newText = this.allPossibleRequestBodys[newValue];
+        const asJson = JSON.stringify(newText, null, 4);
+        this.props.onRequestTextChanged(asJson);
     };
-
-
 
     getDropdownList() {
         const options = Object.keys(this.allPossibleRequestBodys).map(
             curKey => <option
                 value={curKey}
                 key={curKey}
-                defaultValue={curKey == this.state.selectedRequestId}>{curKey}
+                defaultValue={curKey === this.state.selectedRequestId}>{curKey}
             </option>);
         const dropDown = (<select onChange={this.onRequestBodySelectionChange}>
             {options}
@@ -55,23 +44,11 @@ class RequestBodyChooser extends Component {
     }
 
     render() {
-        return <div className="RequestBodyChooser">{this.getDropdownList()}</div>
+        return <div className="RequestBodyChooser">
+            <p>Predefined requests:</p>
+            <div>{this.getDropdownList()}</div>
+        </div>
     }
-
-
-//         const options = Object.keys(this.possibleRequests).map(
-    // curKey =>
-    //     <option
-    //         value={curKey}
-    //         key={curKey}
-    //         defaultValue={curKey == this.state.selectedRequestId}>{curKey}
-    //     </option>);
-
-
-    //     return <div className="RequestBodyChooser">
-    //             Request body chooser
-    //           </div>
-    // }
 }
 
 export default RequestBodyChooser;
