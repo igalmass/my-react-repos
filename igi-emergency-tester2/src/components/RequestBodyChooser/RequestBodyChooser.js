@@ -4,31 +4,43 @@ import React, {Component} from 'react';
 
 class RequestBodyChooser extends Component {
     state = {
-        selectedRequestBodyId: 'goodAddress_returns200_success'
+        selectedRequestBodyId: 'goodAddress_200_success'
     };
 
     allPossibleRequestBodys = {
-        goodAddress_returns200_success: {
+        goodAddress_200_success: {
             line1: "20 W 30th St",
             city: "New York",
             stateORprovince: "NY",
             postalCode: "10001"
         },
-        addressWithoutCity: {
-            country: "USA",
-            line1: "minesota 8"
+        returns_minorModifications: {
+            line1: "20 W 30th St",
+            city: "new york",
+            stateORprovince: "NY",
+            postalCode: "10001"
         },
-        addressWith_400_InvalidStateCode: {
+        returns_suggestedAddress_ADDR_CONFLICT: {
+            line1: "20 W 30th St",
+            city: "New ork",
+            stateORprovince: "NY",
+            postalCode: "10001"
+        },
+        addressWith_409_InvalidWabashi_ADDR_CONFLICT: {
+            line1: "401 N WABASHI AV",
+            city: 'CHiCAGO',
+            stateORprovince: 'IL',
+            postalCode: "60611"
+        },
+        addressWith_400_InvalidStateCode_ADDR_ILGL: {
             line1: "20 W 30th ST",
             city: "New York",
             stateORprovince: "NEW YORK",
             postalCode: "10001"
         },
-        addressWith_409_InvalidWabashi: {
-            line1: "401 N WABASHI AV",
-            city: 'CHiCAGO',
-            stateORprovince: 'IL',
-            postalCode: "60611"
+        addressWithoutCity_ADDR_ILGL: {
+            country: "USA",
+            line1: "minesota 8"
         }
     };
 

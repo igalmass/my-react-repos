@@ -3,6 +3,7 @@ import './RequestSender.css';
 import '../UI/Button/Button.css';
 import axios from 'axios';
 import JsonService from "../../services/JsonService";
+const igiXmlFormatter = require('xml-formatter'); //  from 'xml-formatter';
 
 class RequestSender extends Component {
     state = {
@@ -115,6 +116,20 @@ class RequestSender extends Component {
     extractResponseFromError(error) {
         let responseText = error.message ? error.message : "Got error !";
         if (error.response && error.response.data) {
+
+            // let additionalMsg = error.response.data.additionalMsg;
+            // if (additionalMsg){
+            //     if (additionalMsg.startsWith('<')){
+            //         debugger;
+            //         let asXml = igiXmlFormatter(additionalMsg);
+            //         asXml = asXml.replace(/\n/g, "<br/>");
+            //         error.response.data.additionalMsg = asXml;
+            //         debugger;
+            //
+            //     }
+            // }
+
+
             responseText =
                 `Error: Got error ${error.response.status} from the server.\r\n` +
                 `The data is:\r\n` +
