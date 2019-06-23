@@ -6,22 +6,6 @@ import './DspTester.css';
 
 class DspTester extends Component {
 
-    getAddressWithError_NoCity = () => {
-        return {
-            country: 'USA',
-            line1: 'minesota 8'
-        }
-    };
-
-    getGoodAddress = () => {
-        return {
-            line1: '20 W 30th St',
-            city: 'New York',
-            stateORprovince: 'NY',
-            postalCode: '10001'
-        }
-    }
-
     defaultResponse = {
         note: "this is sample response hahaha",
         code: "code code",
@@ -34,8 +18,7 @@ class DspTester extends Component {
 
     state = {
         requestText: JSON.stringify(
-            //this.getAddressWithError_NoCity(),
-            this.getGoodAddress(),
+            null,
             null,
             4),
         responseText: JSON.stringify(this.defaultResponse, null, 4)

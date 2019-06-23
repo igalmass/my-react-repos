@@ -79,8 +79,9 @@ class RequestSender extends Component {
             )
             .catch(
                 error => {
-                    debugger;
-                    this.props.setResponse(error.message ? error.message : "Got error !");
+                    // debugger;
+                    // this.props.setResponse(error.message ? error.message : "Got error !");
+                    this.extractResponseFromError(error);
                 });
     }
 
@@ -108,12 +109,22 @@ class RequestSender extends Component {
             )
             .catch(
                 error => {
-                    debugger;
-                    this.props.setResponse(error.message ? error.message : "Got error !");
+                    this.extractResponseFromError(error);
                 });
     }
 
 
+    extractResponseFromError(error) {
+        let responseText = error.message ? error.message : "Got error !";
+        if (error.response && error.response.data) {
+            debugger;
+            responseText =
+                `Error: Got error ${error.response.status} from the server. Data is:\r\n` +
+                `${JSON.stringify(error.response.data, null, 4)}`;
+            // responseText = responseText + JSON.stringify(error.response.data);
+        }
+        this.props.setResponse(responseText);
+    }
 
     render() {
         return (
