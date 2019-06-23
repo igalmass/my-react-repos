@@ -4,11 +4,11 @@ import React, {Component} from 'react';
 
 class RequestBodyChooser extends Component {
     state = {
-        selectedRequestBodyId: 'goodAddress'
+        selectedRequestBodyId: 'goodAddress_returns200_success'
     };
 
     allPossibleRequestBodys = {
-        goodAddress: {
+        goodAddress_returns200_success: {
             line1: "20 W 30th St",
             city: "New York",
             stateORprovince: "NY",
@@ -17,6 +17,18 @@ class RequestBodyChooser extends Component {
         addressWithoutCity: {
             country: "USA",
             line1: "minesota 8"
+        },
+        addressWith_400_InvalidStateCode: {
+            line1: "20 W 30th ST",
+            city: "New York",
+            stateORprovince: "NEW YORK",
+            postalCode: "10001"
+        },
+        addressWith_409_InvalidWabashi: {
+            line1: "401 N WABASHI AV",
+            city: 'CHiCAGO',
+            stateORprovince: 'IL',
+            postalCode: "60611"
         }
     };
 

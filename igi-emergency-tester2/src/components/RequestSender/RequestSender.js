@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './RequestSender.css';
 import '../UI/Button/Button.css';
 import axios from 'axios';
-
+import JsonService from "../../services/JsonService";
 
 class RequestSender extends Component {
     state = {
@@ -70,7 +70,7 @@ class RequestSender extends Component {
                 response => {
                     let responseText = "got response successfully";
                     if (response && response.data) {
-                        responseText = JSON.stringify(response.data);
+                        responseText = JSON.stringify(response.data, null, 4);
                     }
 
                     console.log(`got response ${response}`);
@@ -79,8 +79,6 @@ class RequestSender extends Component {
             )
             .catch(
                 error => {
-                    // debugger;
-                    // this.props.setResponse(error.message ? error.message : "Got error !");
                     this.extractResponseFromError(error);
                 });
     }
@@ -100,7 +98,7 @@ class RequestSender extends Component {
                 response => {
                     let responseText = "got response successfully";
                     if (response && response.data) {
-                        responseText = JSON.stringify(response.data);
+                        responseText = JSON.stringify(response.data, null, 4);
                     }
 
                     console.log(`got response ${response}`);
@@ -117,11 +115,11 @@ class RequestSender extends Component {
     extractResponseFromError(error) {
         let responseText = error.message ? error.message : "Got error !";
         if (error.response && error.response.data) {
-            debugger;
             responseText =
-                `Error: Got error ${error.response.status} from the server. Data is:\r\n` +
+                `Error: Got error ${error.response.status} from the server.\r\n` +
+                `The data is:\r\n` +
+                // `${JsonService.stringify(error.response.data)}`;
                 `${JSON.stringify(error.response.data, null, 4)}`;
-            // responseText = responseText + JSON.stringify(error.response.data);
         }
         this.props.setResponse(responseText);
     }
@@ -142,13 +140,9 @@ class RequestSender extends Component {
                     </div>
                     <button className="myButton" type="button" onClick={this.onSendButtonClicked}>Send request</button>
                 </div>
-                {/*<div>*/}
-                {/*    <p>for display only: The URL: {this.state.theUrl}</p>*/}
-                {/*</div>*/}
             </div>
         );
     }
-
 
 }
 
