@@ -27,6 +27,10 @@ class RequestBodyChooser extends Component {
         }
     }
 
+    componentDidMount() {
+        //  todo: add here
+    }
+
 
     onRequestBodySelectionChange = (event) => {
         this.setState({selectedRequestId: event.target.value});

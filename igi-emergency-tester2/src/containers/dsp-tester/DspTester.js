@@ -6,12 +6,21 @@ import './DspTester.css';
 
 class DspTester extends Component {
 
-    getDummyAddress = () => {
+    getAddressWithError_NoCity = () => {
         return {
             country: 'USA',
             line1: 'minesota 8'
         }
     };
+
+    getGoodAddress = () => {
+        return {
+            line1: '20 W 30th St',
+            city: 'New York',
+            stateORprovince: 'NY',
+            postalCode: '10001'
+        }
+    }
 
     defaultResponse = {
         note: "this is sample response hahaha",
@@ -25,7 +34,10 @@ class DspTester extends Component {
 
     state = {
         requestText: JSON.stringify(
-            this.getDummyAddress(), null, 4),
+            //this.getAddressWithError_NoCity(),
+            this.getGoodAddress(),
+            null,
+            4),
         responseText: JSON.stringify(this.defaultResponse, null, 4)
     };
 
@@ -47,7 +59,7 @@ class DspTester extends Component {
                 <RequestSender setResponse={this.setResponse} requestText={this.state.requestText}/>
                 {/*<RequestBodyChooser onRequestTextChanged={this.onRequestTextChanged()}/>*/}
                 <TextDisplayer title="The Request:" onTextChanged={this.onRequestTextChanged}>{this.state.requestText}</TextDisplayer>
-                <TextDisplayer title="The Response:" onTextChanged={this.onResponseTextChanged}>{this.state.responseText}</TextDisplayer>
+                <TextDisplayer title="The Response:" onTextChanged={this.onResponseTextChanged} height='400px'>{this.state.responseText}</TextDisplayer>
             </div>);
     }
 }

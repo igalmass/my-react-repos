@@ -29,18 +29,27 @@ const textDisplayer = (props) => {
         props.onTextChanged(newText);
     }
 
-    function onClearTextButtonClicked() {
+    const onClearTextButtonClicked = () => {
         props.onTextChanged("");
     }
 
+
+    function getTextareaToRender() {
+        let style = {};
+        if (props.height){
+            style = {height: props.height};
+        }
+        return <textarea rows='10' cols='200' value={props.children} style={style} onChange={onTextChanged}/>;
+    }
+
     return (<div className="TextDisplayer">
-                <div style={{display: 'flex'}}>
-                    <h3>{props.title}</h3>
-                    <button className="myButton" onClick={onBeautifyButtonClicked}>Beautify</button>
-                    <button className="myButton" onClick={onClearTextButtonClicked}>Clear</button>
-                </div>
-                <textarea rows='10' cols='200' value={props.children} onChange={onTextChanged}/>
+            <div style={{display: 'flex'}}>
+                <h3>{props.title}</h3>
+                <button className="myButton" onClick={onBeautifyButtonClicked}>Beautify</button>
+                <button className="myButton" onClick={onClearTextButtonClicked}>Clear</button>
             </div>
+            {getTextareaToRender()}
+        </div>
     )
 }
 
