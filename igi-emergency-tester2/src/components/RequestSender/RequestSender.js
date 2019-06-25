@@ -15,6 +15,9 @@ class RequestSender extends Component {
         "posts": 'https://jsonplaceholder.typicode.com/posts',
         "helloTest": 'http://localhost:9008/ucaas-ap/v1/hello',
         "verifyAddress": 'http://localhost:9008/ucaas-ap/v1/verifyAddress',
+        "dspExistsInCountry_trueResponse": "http://localhost:9008/ucaas-ap/v1/dspExistsInCountry?dspCode=BWDC&countryCode=US",
+        "dspExistsInCountry_falseResponse": "http://localhost:9008/ucaas-ap/v1/dspExistsInCountry?dspCode=BWDC2&countryCode=US",
+        "dspExistsInCountry_requestWithoutParams": "http://localhost:9008/ucaas-ap/v1/dspExistsInCountry?dspCode=BWDC2",
         "registerAddress": 'http://localhost/registerAddress'
     };
 
@@ -41,6 +44,9 @@ class RequestSender extends Component {
     onSendButtonClicked = () => {
         switch (this.state.selectedRequestId) {
             case "helloTest":
+            case "dspExistsInCountry_trueResponse":
+            case "dspExistsInCountry_falseResponse":
+            case "dspExistsInCountry_requestWithoutParams":
                 this.executeGetRequest();
                 break;
             default:
