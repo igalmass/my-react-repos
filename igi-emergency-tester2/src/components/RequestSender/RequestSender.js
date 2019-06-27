@@ -12,12 +12,37 @@ class RequestSender extends Component {
     };
 
     baseUrl = "http://localhost:9008/ucaas-ap/v1";
+    // perstBaseUrl = "http://10.45.35.164:8184/ucaas-ap/v1/registry";
+    perstBaseUrl = "http://localhost:8184/ucaas-ap/v1/registry";
+    extensionDidsBaseUrl = `${this.perstBaseUrl}/ExtensionsDIDS`;
+
+
+
+
+    getExtensionDidsForNumberUrl_ForGet(){
+        return `${this.extensionDidsBaseUrl}/u-ifajxefub4d`; // for local
+        // return `${this.extensionDidsBaseUrl}/u-8jxeodj3u`; // for 164
+
+        // return "http://localhost:8184/ucaas-ap/v1/registry/ExtensionsDIDS/u-ifajxefub4d";
+    }
+
+    getExtensionDidsForNumberUrl_ForPatch() {
+        return `${this.extensionDidsBaseUrl}/19995555555`
+    }
+
+    get_DidsByBusinessId() {
+        return `${this.extensionDidsBaseUrl}?businessId=101`;
+    }
+
 
     possibleRequests = {
         // "posts": 'https://jsonplaceholder.typicode.com/posts',
         "handleUserAddressChanged": `${this.baseUrl}/handleUserAddressChanged`,
         "handleBusinessAddressChanged": `${this.baseUrl}/handleBusinessAddressChanged`,
         "handleDspChanged": `${this.baseUrl}/handleDspChanged`,
+        "get_didById": this.getExtensionDidsForNumberUrl_ForGet(),
+        "patch_didById": this.getExtensionDidsForNumberUrl_ForGet(),
+        "get_didsByBusinessId": this.get_DidsByBusinessId(),
         "helloTest": 'http://localhost:9008/ucaas-ap/v1/hello',
         "verifyAddress": 'http://localhost:9008/ucaas-ap/v1/verifyAddress',
         "dspExistsInCountry_trueResponse": "http://localhost:9008/ucaas-ap/v1/dspExistsInCountry?dspCode=BWDC&countryCode=US",
@@ -52,7 +77,14 @@ class RequestSender extends Component {
             case "dspExistsInCountry_trueResponse":
             case "dspExistsInCountry_falseResponse":
             case "dspExistsInCountry_requestWithoutParams":
+            case "get_extensionDidsForBusiness":
+            case "get_didById":
                 this.executeGetRequest();
+                break;
+            case "patch_didById":
+                debugger;
+                this.executePatchRequest();
+                console.log('sending patch request ...');
                 break;
             case "handleUserAddressChanged":
             case "handleBusinessAddressChanged":
@@ -61,7 +93,9 @@ class RequestSender extends Component {
                 break;
 
             default:
+                debugger;
                 this.executePostRequest();
+
                 break;
         }
 
@@ -100,6 +134,29 @@ class RequestSender extends Component {
             return;
         }
         axios.put(url,
+            requestBody,
+            this.getConfigWithHeaders())
+            .then(
+                response => {
+                    this.handlePositiveResponse(response);
+                }
+            )
+            .catch(
+                error => {
+                    this.extractResponseFromError(error);
+                });
+    }
+
+    executePatchRequest() {
+        const url = this.possibleRequests[this.state.selectedRequestId];
+        let requestBody = null;
+        try {
+            requestBody = JSON.parse(this.props.requestText);
+        } catch (e) {
+            alert(`The request test is invalid json: ${e}`);
+            return;
+        }
+        axios.patch(url,
             requestBody,
             this.getConfigWithHeaders())
             .then(
