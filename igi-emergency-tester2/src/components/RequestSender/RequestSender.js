@@ -7,12 +7,17 @@ const igiXmlFormatter = require('xml-formatter'); //  from 'xml-formatter';
 
 class RequestSender extends Component {
     state = {
-        selectedRequestId: "verifyAddress",
+        selectedRequestId: "handleUserAddressChanged",
         theUrl: null,
     };
 
+    baseUrl = "http://localhost:9008/ucaas-ap/v1";
+
     possibleRequests = {
-        "posts": 'https://jsonplaceholder.typicode.com/posts',
+        // "posts": 'https://jsonplaceholder.typicode.com/posts',
+        "handleUserAddressChanged": `${this.baseUrl}/handleUserAddressChanged`,
+        "handleBusinessAddressChanged": `${this.baseUrl}/handleBusinessAddressChanged`,
+        "handleDspChanged": `${this.baseUrl}/handleDspChanged`,
         "helloTest": 'http://localhost:9008/ucaas-ap/v1/hello',
         "verifyAddress": 'http://localhost:9008/ucaas-ap/v1/verifyAddress',
         "dspExistsInCountry_trueResponse": "http://localhost:9008/ucaas-ap/v1/dspExistsInCountry?dspCode=BWDC&countryCode=US",
@@ -49,6 +54,12 @@ class RequestSender extends Component {
             case "dspExistsInCountry_requestWithoutParams":
                 this.executeGetRequest();
                 break;
+            case "handleUserAddressChanged":
+            case "handleBusinessAddressChanged":
+            case "handleDspChanged":
+                this.executePutRequest();
+                break;
+
             default:
                 this.executePostRequest();
                 break;
@@ -67,21 +78,33 @@ class RequestSender extends Component {
         }
         axios.post(url,
             requestBody,
-            {
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    "content-type": 'application/json'
-                }
-            })
+            this.getConfigWithHeaders())
             .then(
                 response => {
-                    let responseText = "got response successfully";
-                    if (response && response.data) {
-                        responseText = JSON.stringify(response.data, null, 4);
-                    }
+                    this.handlePositiveResponse(response);
+                }
+            )
+            .catch(
+                error => {
+                    this.extractResponseFromError(error);
+                });
+    }
 
-                    console.log(`got response ${response}`);
-                    this.props.setResponse(responseText);
+    executePutRequest() {
+        const url = this.possibleRequests[this.state.selectedRequestId];
+        let requestBody = null;
+        try {
+            requestBody = JSON.parse(this.props.requestText);
+        } catch (e) {
+            alert(`The request test is invalid json: ${e}`);
+            return;
+        }
+        axios.put(url,
+            requestBody,
+            this.getConfigWithHeaders())
+            .then(
+                response => {
+                    this.handlePositiveResponse(response);
                 }
             )
             .catch(
@@ -91,6 +114,24 @@ class RequestSender extends Component {
     }
 
 
+    getConfigWithHeaders() {
+        return {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                "content-type": 'application/json'
+            }
+        };
+    }
+
+    handlePositiveResponse(response) {
+        let responseText = "got response successfully";
+        if (response && response.data) {
+            responseText = JSON.stringify(response.data, null, 4);
+        }
+
+        console.log(`got response ${response}`);
+        this.props.setResponse(responseText);
+    }
 
     executeGetRequest() {
         const url = this.possibleRequests[this.state.selectedRequestId];

@@ -41,6 +41,20 @@ class RequestBodyChooser extends Component {
         addressWithoutCity_ADDR_ILGL: {
             country: "USA",
             line1: "minesota 8"
+        },
+        handleUserAddressChanged: {
+            didNumbers: [
+                "1", "2", "3"
+            ],
+            isValidDsp: true
+        },
+        handleBusinessAddressChanged: {
+            isValidDsp: false,
+            businessId: "88"
+        },
+        handleDspChanged: {
+            isValidDsp: false,
+            businessId: "54"
         }
     };
 
