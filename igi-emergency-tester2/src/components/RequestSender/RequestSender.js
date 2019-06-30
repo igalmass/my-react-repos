@@ -11,10 +11,11 @@ class RequestSender extends Component {
         theUrl: null,
     };
 
-    baseUrl = "http://localhost:9008/ucaas-ap/v1";
+    baseUrl = "http://localhost:9008/ucaas-ap/v1/registry";
     // perstBaseUrl = "http://10.45.35.164:8184/ucaas-ap/v1/registry";
     perstBaseUrl = "http://localhost:8184/ucaas-ap/v1/registry";
     extensionDidsBaseUrl = `${this.perstBaseUrl}/ExtensionsDIDS`;
+    // portalDspServiceBaseUrl="http://localhost:9008/ucaas-ap/v1/registry";
 
 
 
@@ -43,11 +44,11 @@ class RequestSender extends Component {
         "get_didById": this.getExtensionDidsForNumberUrl_ForGet(),
         "patch_didById": this.getExtensionDidsForNumberUrl_ForGet(),
         "get_didsByBusinessId": this.get_DidsByBusinessId(),
-        "helloTest": 'http://localhost:9008/ucaas-ap/v1/hello',
-        "verifyAddress": 'http://localhost:9008/ucaas-ap/v1/verifyAddress',
-        "dspExistsInCountry_trueResponse": "http://localhost:9008/ucaas-ap/v1/dspExistsInCountry?dspCode=BWDC&countryCode=US",
-        "dspExistsInCountry_falseResponse": "http://localhost:9008/ucaas-ap/v1/dspExistsInCountry?dspCode=BWDC2&countryCode=US",
-        "dspExistsInCountry_requestWithoutParams": "http://localhost:9008/ucaas-ap/v1/dspExistsInCountry?dspCode=BWDC2",
+        "helloTest": `${this.baseUrl}/hello`,
+        "verifyAddress": `${this.baseUrl}/verifyAddress`,
+        "dspExistsInCountry_trueResponse": `${this.baseUrl}/dspExistsInCountry?dspCode=BWDC&countryCode=US`,
+        "dspExistsInCountry_falseResponse": `${this.baseUrl}/dspExistsInCountry?dspCode=BWDC2&countryCode=US`,
+        "dspExistsInCountry_requestWithoutParams": `${this.baseUrl}/dspExistsInCountry?dspCode=BWDC2`,
         "registerAddress": 'http://localhost/registerAddress'
     };
 
