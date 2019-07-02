@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import './RequestSender.css';
 import '../UI/Button/Button.css';
 import axios from 'axios';
-import JsonService from "../../services/JsonService";
-const igiXmlFormatter = require('xml-formatter'); //  from 'xml-formatter';
 
 class RequestSender extends Component {
     state = {
@@ -11,11 +9,10 @@ class RequestSender extends Component {
         theUrl: null,
     };
 
-    baseUrl = "http://localhost:9008/ucaas-ap/v1/registry";
-    // perstBaseUrl = "http://10.45.35.164:8184/ucaas-ap/v1/registry";
+    portalDspBaseUrl = "http://localhost:9008/ucaas-ap/v1/registry";
+    portalCpeBaseUrl = "http://localhost:9011/ucaas-ap/v1/registry";
     perstBaseUrl = "http://localhost:8184/ucaas-ap/v1/registry";
     extensionDidsBaseUrl = `${this.perstBaseUrl}/ExtensionsDIDS`;
-    // portalDspServiceBaseUrl="http://localhost:9008/ucaas-ap/v1/registry";
 
 
 
@@ -37,19 +34,21 @@ class RequestSender extends Component {
 
 
     possibleRequests = {
-        // "posts": 'https://jsonplaceholder.typicode.com/posts',
-        "handleUserAddressChanged": `${this.baseUrl}/handleUserAddressChanged`,
-        "handleBusinessAddressChanged": `${this.baseUrl}/handleBusinessAddressChanged`,
-        "handleDspChanged": `${this.baseUrl}/handleDspChanged`,
+        "handleUserAddressChanged": `${this.portalDspBaseUrl}/handleUserAddressChanged`,
+        "handleBusinessAddressChanged": `${this.portalDspBaseUrl}/handleBusinessAddressChanged`,
+        "handleDspChanged": `${this.portalDspBaseUrl}/handleDspChanged`,
         "get_didById": this.getExtensionDidsForNumberUrl_ForGet(),
         "patch_didById": this.getExtensionDidsForNumberUrl_ForGet(),
         "get_didsByBusinessId": this.get_DidsByBusinessId(),
-        "helloTest": `${this.baseUrl}/hello`,
-        "verifyAddress": `${this.baseUrl}/verifyAddress`,
-        "dspExistsInCountry_trueResponse": `${this.baseUrl}/dspExistsInCountry?dspCode=BWDC&countryCode=US`,
-        "dspExistsInCountry_falseResponse": `${this.baseUrl}/dspExistsInCountry?dspCode=BWDC2&countryCode=US`,
-        "dspExistsInCountry_requestWithoutParams": `${this.baseUrl}/dspExistsInCountry?dspCode=BWDC2`,
-        "registerAddress": 'http://localhost/registerAddress'
+        "helloTest": `${this.portalDspBaseUrl}/hello`,
+        "verifyAddress": `${this.portalDspBaseUrl}/verifyAddress`,
+        "dspExistsInCountry_trueResponse": `${this.portalDspBaseUrl}/dspExistsInCountry?dspCode=BWDC&countryCode=US`,
+        "dspExistsInCountry_falseResponse": `${this.portalDspBaseUrl}/dspExistsInCountry?dspCode=BWDC2&countryCode=US`,
+        "dspExistsInCountry_requestWithoutParams": `${this.portalDspBaseUrl}/dspExistsInCountry?dspCode=BWDC2`,
+        "registerAddress": 'http://localhost/registerAddress',
+        "isVendorModelSca_trueResponse": `${this.portalCpeBaseUrl}/vendorModels/isVendorModelSca?vendor=Polycom&model=VVX350`,
+        "isVendorModelSca_falseResponse": `${this.portalCpeBaseUrl}/vendorModels/isVendorModelSca?vendor=abc&model=456`
+
     };
 
     getDropDown = () => {
@@ -80,6 +79,8 @@ class RequestSender extends Component {
             case "dspExistsInCountry_requestWithoutParams":
             case "get_extensionDidsForBusiness":
             case "get_didById":
+            case "isVendorModelSca_trueResponse":
+            case "isVendorModelSca_falseResponse":
                 this.executeGetRequest();
                 break;
             case "patch_didById":
@@ -255,7 +256,7 @@ class RequestSender extends Component {
                     <div className="TheUrl">
                         <strong>URL: </strong>
                         <input type="text"
-                                value={this.possibleRequests[this.state.selectedRequestId]} readOnly
+                                value={this.possibleRequests[this.state.selectedRequestId]}
                                 />
                     </div>
                     <button className="myButton" type="button" onClick={this.onSendButtonClicked}>Send request</button>
