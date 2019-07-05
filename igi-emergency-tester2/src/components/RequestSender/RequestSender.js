@@ -34,16 +34,16 @@ class RequestSender extends Component {
 
 
     possibleRequests = {
-        "handleUserAddressChanged": `${this.portalDspBaseUrl}/handleUserAddressChanged`,
-        "handleBusinessAddressChanged": `${this.portalDspBaseUrl}/handleBusinessAddressChanged`,
-        "handleDspChanged": `${this.portalDspBaseUrl}/handleDspChanged`,
+        "handleUserAddressChanged": `${this.portalDspBaseUrl}/didsStatus/handleUserAddressChanged`,
+        "handleBusinessAddressChanged": `${this.portalDspBaseUrl}/didsStatus/handleBusinessAddressChanged`,
+        "handleDspChanged": `${this.portalDspBaseUrl}/didsStatus/handleDspChanged`,
         "get_didById": this.getExtensionDidsForNumberUrl_ForGet(),
         "patch_didById": this.getExtensionDidsForNumberUrl_ForGet(),
         "get_didsByBusinessId": this.get_DidsByBusinessId(),
         "helloTest": `${this.portalDspBaseUrl}/hello`,
         "verifyAddress": `${this.portalDspBaseUrl}/verifyAddress`,
         "dspExistsInCountry_trueResponse": `${this.portalDspBaseUrl}/dspExistsInCountry?dspCode=BWDC&countryCode=US`,
-        "dspExistsInCountry_falseResponse": `${this.portalDspBaseUrl}/dspExistsInCountry?dspCode=BWDC2&countryCode=US`,
+        "dspExistsInCountry_falseResponse": `${this.portalDspBaseUrl}/dspExistsInCountry?dspCode=NO_DSP&countryCode=US`,
         "dspExistsInCountry_requestWithoutParams": `${this.portalDspBaseUrl}/dspExistsInCountry?dspCode=BWDC2`,
         "registerAddress": 'http://localhost/registerAddress',
         "isVendorModelSca_trueResponse": `${this.portalCpeBaseUrl}/vendorModels/isVendorModelSca?vendor=Polycom&model=VVX350`,
