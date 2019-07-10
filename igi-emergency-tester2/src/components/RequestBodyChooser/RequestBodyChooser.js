@@ -8,6 +8,10 @@ class RequestBodyChooser extends Component {
     };
 
     allPossibleRequestBodys = {
+        handleDspChanged: {
+            isValidDsp: false,
+            businessId: "101"
+        },
         goodAddress_200_success: {
             line1: "20 W 30th St",
             city: "New York",
@@ -51,11 +55,8 @@ class RequestBodyChooser extends Component {
         handleBusinessAddressChanged: {
             isValidDsp: false,
             businessId: "101"
-        },
-        handleDspChanged: {
-            isValidDsp: false,
-            businessId: "101"
         }
+
     };
 
     componentDidMount() {

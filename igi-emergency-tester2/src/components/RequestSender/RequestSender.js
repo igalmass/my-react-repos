@@ -10,15 +10,15 @@ class RequestSender extends Component {
     extensionDidsBaseUrl = `${this.perstBaseUrl}/ExtensionsDIDS`;
 
     possibleRequests = {
+        "handleDspChanged": `${this.portalDspBaseUrl}/didsStatus/handleDspChanged`,
+        "get_didsByBusinessId": this.get_DidsByBusinessId(),
+        "patch_didById": this.getExtensionDidsForNumberUrl_ForGet(),
         "get_ConsulTest_163": "https://10.45.35.163:8500/v1/kv/?keys&dc=dc1&separator=%2F",
         "get_ConsulTest_164": "https://10.45.35.164:8500/v1/kv/?keys&dc=dc1&separator=%2F",
         "get_ConsulTest_Evgeny": "https://10.1.114.150:8500/v1/kv/?keys&dc=dc1&separator=%2F",
         "handleUserAddressChanged": `${this.portalDspBaseUrl}/didsStatus/handleUserAddressChanged`,
         "handleBusinessAddressChanged": `${this.portalDspBaseUrl}/didsStatus/handleBusinessAddressChanged`,
-        "handleDspChanged": `${this.portalDspBaseUrl}/didsStatus/handleDspChanged`,
         "get_didById": this.getExtensionDidsForNumberUrl_ForGet(),
-        "patch_didById": this.getExtensionDidsForNumberUrl_ForGet(),
-        "get_didsByBusinessId": this.get_DidsByBusinessId(),
         "helloTest": `${this.portalDspBaseUrl}/hello`,
         "verifyAddress": `${this.portalDspBaseUrl}/verifyAddress`,
         "dspExistsInCountry_trueResponse": `${this.portalDspBaseUrl}/dspExistsInCountry?dspCode=BWDC&countryCode=US`,
@@ -30,15 +30,15 @@ class RequestSender extends Component {
     };
 
     state = {
-        selectedRequestId: "handleUserAddressChanged",
+        selectedRequestId: "get_didsByBusinessId",
         theUrl: null,
         possibleRequests: this.possibleRequests
     };
 
 
     getExtensionDidsForNumberUrl_ForGet(){
-        // return `${this.extensionDidsBaseUrl}/u-ifajxefub4d`; // for local
-        return `${this.extensionDidsBaseUrl}/u-8jxeodj3u`; // for 164
+        return `${this.extensionDidsBaseUrl}/u-ifajxefub4d`; // for local
+        // return `${this.extensionDidsBaseUrl}/u-8jxeodj3u`; // for 164
 
         // return "http://localhost:8184/ucaas-ap/v1/registry/ExtensionsDIDS/u-ifajxefub4d";
     }
@@ -74,13 +74,21 @@ class RequestSender extends Component {
     };
 
     onSendButtonClicked = () => {
-        switch (this.state.selectedRequestId) {
+        const selectedRequestId = this.state.selectedRequestId;
+
+        if (selectedRequestId.startsWith("get_")){
+            this.executeGetRequest();
+            return;
+        }
+
+        switch (selectedRequestId) {
             case "helloTest":
             case "dspExistsInCountry_trueResponse":
             case "dspExistsInCountry_falseResponse":
             case "dspExistsInCountry_requestWithoutParams":
             case "get_extensionDidsForBusiness":
             case "get_didById":
+            case "get_didsByBusinessId":
             case "isVendorModelSca_trueResponse":
             case "isVendorModelSca_falseResponse":
             case "get_ConsulTest_163":
@@ -100,9 +108,7 @@ class RequestSender extends Component {
                 break;
 
             default:
-                debugger;
-                this.executePostRequest();
-
+                alert(`Unknown http method for ${selectedRequestId}`);
                 break;
         }
 
@@ -261,7 +267,8 @@ class RequestSender extends Component {
                 <div className="UrlSendingWrapper">
                     <div className="TheUrl">
                         <strong>URL: </strong>
-                        <input type="text"
+                        <input
+                               type="text"
                                 value={this.state.possibleRequests[this.state.selectedRequestId]}
                                onChange={this.handleUrlChanged}
                                 />
