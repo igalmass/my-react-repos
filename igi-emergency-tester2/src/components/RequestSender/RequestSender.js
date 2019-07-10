@@ -4,36 +4,15 @@ import '../UI/Button/Button.css';
 import axios from 'axios';
 
 class RequestSender extends Component {
-    state = {
-        selectedRequestId: "handleUserAddressChanged",
-        theUrl: null,
-    };
-
     portalDspBaseUrl = "http://localhost:9008/ucaas-ap/v1/registry";
     portalCpeBaseUrl = "http://localhost:9011/ucaas-ap/v1/registry";
     perstBaseUrl = "http://localhost:8184/ucaas-ap/v1/registry";
     extensionDidsBaseUrl = `${this.perstBaseUrl}/ExtensionsDIDS`;
 
-
-
-
-    getExtensionDidsForNumberUrl_ForGet(){
-        return `${this.extensionDidsBaseUrl}/u-ifajxefub4d`; // for local
-        // return `${this.extensionDidsBaseUrl}/u-8jxeodj3u`; // for 164
-
-        // return "http://localhost:8184/ucaas-ap/v1/registry/ExtensionsDIDS/u-ifajxefub4d";
-    }
-
-    getExtensionDidsForNumberUrl_ForPatch() {
-        return `${this.extensionDidsBaseUrl}/19995555555`
-    }
-
-    get_DidsByBusinessId() {
-        return `${this.extensionDidsBaseUrl}?businessId=101`;
-    }
-
-
     possibleRequests = {
+        "get_ConsulTest_163": "https://10.45.35.163:8500/v1/kv/?keys&dc=dc1&separator=%2F",
+        "get_ConsulTest_164": "https://10.45.35.164:8500/v1/kv/?keys&dc=dc1&separator=%2F",
+        "get_ConsulTest_Evgeny": "https://10.1.114.150:8500/v1/kv/?keys&dc=dc1&separator=%2F",
         "handleUserAddressChanged": `${this.portalDspBaseUrl}/didsStatus/handleUserAddressChanged`,
         "handleBusinessAddressChanged": `${this.portalDspBaseUrl}/didsStatus/handleBusinessAddressChanged`,
         "handleDspChanged": `${this.portalDspBaseUrl}/didsStatus/handleDspChanged`,
@@ -47,12 +26,35 @@ class RequestSender extends Component {
         "dspExistsInCountry_requestWithoutParams": `${this.portalDspBaseUrl}/dspExistsInCountry?dspCode=BWDC2`,
         "registerAddress": 'http://localhost/registerAddress',
         "isVendorModelSca_trueResponse": `${this.portalCpeBaseUrl}/vendorModels/isVendorModelSca?vendor=Polycom&model=VVX350`,
-        "isVendorModelSca_falseResponse": `${this.portalCpeBaseUrl}/vendorModels/isVendorModelSca?vendor=abc&model=456`
-
+        "isVendorModelSca_falseResponse": `${this.portalCpeBaseUrl}/vendorModels/isVendorModelSca?vendor=abc&model=456`,
     };
 
+    state = {
+        selectedRequestId: "handleUserAddressChanged",
+        theUrl: null,
+        possibleRequests: this.possibleRequests
+    };
+
+
+    getExtensionDidsForNumberUrl_ForGet(){
+        // return `${this.extensionDidsBaseUrl}/u-ifajxefub4d`; // for local
+        return `${this.extensionDidsBaseUrl}/u-8jxeodj3u`; // for 164
+
+        // return "http://localhost:8184/ucaas-ap/v1/registry/ExtensionsDIDS/u-ifajxefub4d";
+    }
+
+    getExtensionDidsForNumberUrl_ForPatch() {
+        return `${this.extensionDidsBaseUrl}/19995555555`
+    }
+
+    get_DidsByBusinessId() {
+        return `${this.extensionDidsBaseUrl}?businessId=101`;
+    }
+
+
+
     getDropDown = () => {
-        const options = Object.keys(this.possibleRequests).map(
+        const options = Object.keys(this.state.possibleRequests).map(
             curKey =>
                 <option
                     value={curKey}
@@ -81,6 +83,9 @@ class RequestSender extends Component {
             case "get_didById":
             case "isVendorModelSca_trueResponse":
             case "isVendorModelSca_falseResponse":
+            case "get_ConsulTest_163":
+            case "get_ConsulTest_164":
+            case "get_ConsulTest_Evgeny":
                 this.executeGetRequest();
                 break;
             case "patch_didById":
@@ -104,7 +109,7 @@ class RequestSender extends Component {
     };
 
     executePostRequest() {
-        const url = this.possibleRequests[this.state.selectedRequestId];
+        const url = this.state.possibleRequests[this.state.selectedRequestId];
         let requestBody = null;
         try {
             requestBody = JSON.parse(this.props.requestText);
@@ -127,7 +132,7 @@ class RequestSender extends Component {
     }
 
     executePutRequest() {
-        const url = this.possibleRequests[this.state.selectedRequestId];
+        const url = this.state.possibleRequests[this.state.selectedRequestId];
         let requestBody = null;
         try {
             requestBody = JSON.parse(this.props.requestText);
@@ -150,7 +155,7 @@ class RequestSender extends Component {
     }
 
     executePatchRequest() {
-        const url = this.possibleRequests[this.state.selectedRequestId];
+        const url = this.state.possibleRequests[this.state.selectedRequestId];
         let requestBody = null;
         try {
             requestBody = JSON.parse(this.props.requestText);
@@ -184,8 +189,11 @@ class RequestSender extends Component {
 
     handlePositiveResponse(response) {
         let responseText = "got response successfully";
+        if (response.status){
+            responseText = responseText + `- got status ${response.status}\r\n\r\n\r\n`;
+        }
         if (response && response.data) {
-            responseText = JSON.stringify(response.data, null, 4);
+            responseText = responseText + JSON.stringify(response.data, null, 4);
         }
 
         console.log(`got response ${response}`);
@@ -193,7 +201,7 @@ class RequestSender extends Component {
     }
 
     executeGetRequest() {
-        const url = this.possibleRequests[this.state.selectedRequestId];
+        const url = this.state.possibleRequests[this.state.selectedRequestId];
         axios.get(url,
             {
                 headers: {
@@ -202,15 +210,7 @@ class RequestSender extends Component {
                 }
             })
             .then(
-                response => {
-                    let responseText = "got response successfully";
-                    if (response && response.data) {
-                        responseText = JSON.stringify(response.data, null, 4);
-                    }
-
-                    console.log(`got response ${response}`);
-                    this.props.setResponse(responseText);
-                }
+                response => this.handlePositiveResponse(response)
             )
             .catch(
                 error => {
@@ -239,10 +239,16 @@ class RequestSender extends Component {
             responseText =
                 `Error: Got error ${error.response.status} from the server.\r\n` +
                 `The data is:\r\n` +
-                // `${JsonService.stringify(error.response.data)}`;
                 `${JSON.stringify(error.response.data, null, 4)}`;
         }
         this.props.setResponse(responseText);
+    }
+
+    handleUrlChanged = ($event)=> {
+        const newState = this.state;
+        newState.possibleRequests = {... this.state.possibleRequests};
+        newState.possibleRequests[this.state.selectedRequestId] = $event.target.value;
+        this.setState(newState);
     }
 
     render() {
@@ -256,7 +262,8 @@ class RequestSender extends Component {
                     <div className="TheUrl">
                         <strong>URL: </strong>
                         <input type="text"
-                                value={this.possibleRequests[this.state.selectedRequestId]}
+                                value={this.state.possibleRequests[this.state.selectedRequestId]}
+                               onChange={this.handleUrlChanged}
                                 />
                     </div>
                     <button className="myButton" type="button" onClick={this.onSendButtonClicked}>Send request</button>
@@ -264,6 +271,7 @@ class RequestSender extends Component {
             </div>
         );
     }
+
 
 }
 
