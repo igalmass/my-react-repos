@@ -8,6 +8,10 @@ class RequestBodyChooser extends Component {
     };
 
     allPossibleRequestBodys = {
+        put_Cwl_test: {
+            "didForking": "ForkAllDIDs",
+            "ringInterval": "10"
+        },
         handleDspChanged: {
             isValidDsp: false,
             businessId: "101"

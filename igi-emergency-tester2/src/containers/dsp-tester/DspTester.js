@@ -40,7 +40,7 @@ class DspTester extends Component {
         return (
             <div>
                 {/*<DspTesterNav/>*/}
-                <div clas                              sName="DspTester">
+                <div className="DspTester">
                     <RequestSender setResponse={this.setResponse} requestText={this.state.requestText}/>
                     <RequestBodyChooser onRequestTextChanged={this.onRequestTextChanged}/>
                     <TextDisplayer title="The Request:"
