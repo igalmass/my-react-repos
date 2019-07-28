@@ -38,11 +38,17 @@ class DspTester extends Component {
 
     render() {
         return (
-            <div className="DspTester">
-                <RequestSender setResponse={this.setResponse} requestText={this.state.requestText}/>
-                <RequestBodyChooser onRequestTextChanged={this.onRequestTextChanged}/>
-                <TextDisplayer title="The Request:" onTextChanged={this.onRequestTextChanged}>{this.state.requestText}</TextDisplayer>
-                <TextDisplayer title="The Response:" onTextChanged={this.onResponseTextChanged} height='400px'>{this.state.responseText}</TextDisplayer>
+            <div>
+                {/*<DspTesterNav/>*/}
+                <div clas                              sName="DspTester">
+                    <RequestSender setResponse={this.setResponse} requestText={this.state.requestText}/>
+                    <RequestBodyChooser onRequestTextChanged={this.onRequestTextChanged}/>
+                    <TextDisplayer title="The Request:"
+                                   onTextChanged={this.onRequestTextChanged}>{this.state.requestText}</TextDisplayer>
+                    <TextDisplayer title="The Response:" onTextChanged={this.onResponseTextChanged}
+                                   height='755
+                                   px'>{this.state.responseText}</TextDisplayer>
+                </div>
             </div>);
     }
 }

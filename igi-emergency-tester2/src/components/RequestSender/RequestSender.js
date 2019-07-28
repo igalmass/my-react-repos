@@ -10,6 +10,9 @@ class RequestSender extends Component {
     extensionDidsBaseUrl = `${this.perstBaseUrl}/ExtensionsDIDS`;
 
     possibleRequests = {
+        "handleBusinessAddressChanged": `${this.portalDspBaseUrl}/didsStatus/handleBusinessAddressChanged`,
+        "get_cwlTest": "http://localhost:8088/ucaas-ap/v1/registry/CWLProfiles/1234",
+        "put_cwlTest": "http://localhost:8181/ucaas-ap/v1/registry/businesses/101/services/cwl", // https://<ip:port>/ucaas-ap/v1/registry/businesses/<businessID>/services/cwl
         "handleDspChanged": `${this.portalDspBaseUrl}/didsStatus/handleDspChanged`,
         "get_didsByBusinessId": this.get_DidsByBusinessId(),
         "patch_didById": this.getExtensionDidsForNumberUrl_ForGet(),
@@ -17,7 +20,6 @@ class RequestSender extends Component {
         "get_ConsulTest_164": "https://10.45.35.164:8500/v1/kv/?keys&dc=dc1&separator=%2F",
         "get_ConsulTest_Evgeny": "https://10.1.114.150:8500/v1/kv/?keys&dc=dc1&separator=%2F",
         "handleUserAddressChanged": `${this.portalDspBaseUrl}/didsStatus/handleUserAddressChanged`,
-        "handleBusinessAddressChanged": `${this.portalDspBaseUrl}/didsStatus/handleBusinessAddressChanged`,
         "get_didById": this.getExtensionDidsForNumberUrl_ForGet(),
         "helloTest": `${this.portalDspBaseUrl}/hello`,
         "verifyAddress": `${this.portalDspBaseUrl}/verifyAddress`,
@@ -30,13 +32,13 @@ class RequestSender extends Component {
     };
 
     state = {
-        selectedRequestId: "get_didsByBusinessId",
+        selectedRequestId: "handleBusinessAddressChanged",
         theUrl: null,
         possibleRequests: this.possibleRequests
     };
 
 
-    getExtensionDidsForNumberUrl_ForGet(){
+    getExtensionDidsForNumberUrl_ForGet() {
         return `${this.extensionDidsBaseUrl}/u-ifajxefub4d`; // for local
         // return `${this.extensionDidsBaseUrl}/u-8jxeodj3u`; // for 164
 
@@ -52,7 +54,6 @@ class RequestSender extends Component {
     }
 
 
-
     getDropDown = () => {
         const options = Object.keys(this.state.possibleRequests).map(
             curKey =>
@@ -60,7 +61,7 @@ class RequestSender extends Component {
                     value={curKey}
                     key={curKey}
                     defaultValue={curKey == this.state.selectedRequestId}>{curKey}
-            </option>);
+                </option>);
 
         const dropDown = (<select onChange={this.onRequestSelectionChange}>
             {options}
@@ -76,8 +77,14 @@ class RequestSender extends Component {
     onSendButtonClicked = () => {
         const selectedRequestId = this.state.selectedRequestId;
 
-        if (selectedRequestId.startsWith("get_")){
+        if (selectedRequestId.startsWith("get_")) {
             this.executeGetRequest();
+            return;
+        } else if (selectedRequestId.startsWith("put_")) {
+            this.executePostRequest();
+            return;
+        } else if (selectedRequestId.startsWith("patch_")) {
+            this.executePatchRequest();
             return;
         }
 
@@ -195,7 +202,7 @@ class RequestSender extends Component {
 
     handlePositiveResponse(response) {
         let responseText = "got response successfully";
-        if (response.status){
+        if (response.status) {
             responseText = responseText + `- got status ${response.status}\r\n\r\n\r\n`;
         }
         if (response && response.data) {
@@ -250,9 +257,9 @@ class RequestSender extends Component {
         this.props.setResponse(responseText);
     }
 
-    handleUrlChanged = ($event)=> {
+    handleUrlChanged = ($event) => {
         const newState = this.state;
-        newState.possibleRequests = {... this.state.possibleRequests};
+        newState.possibleRequests = {...this.state.possibleRequests};
         newState.possibleRequests[this.state.selectedRequestId] = $event.target.value;
         this.setState(newState);
     }
@@ -268,10 +275,10 @@ class RequestSender extends Component {
                     <div className="TheUrl">
                         <strong>URL: </strong>
                         <input
-                               type="text"
-                                value={this.state.possibleRequests[this.state.selectedRequestId]}
-                               onChange={this.handleUrlChanged}
-                                />
+                            type="text"
+                            value={this.state.possibleRequests[this.state.selectedRequestId]}
+                            onChange={this.handleUrlChanged}
+                        />
                     </div>
                     <button className="myButton" type="button" onClick={this.onSendButtonClicked}>Send request</button>
                 </div>
