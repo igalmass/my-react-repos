@@ -7,9 +7,11 @@ class RequestSender extends Component {
     portalDspBaseUrl = "http://localhost:9008/ucaas-ap/v1/registry";
     portalCpeBaseUrl = "http://localhost:9011/ucaas-ap/v1/registry";
     perstBaseUrl = "http://localhost:8184/ucaas-ap/v1/registry";
+    portalBwdcClientBaseUrl = "http://localhost:8082";
     extensionDidsBaseUrl = `${this.perstBaseUrl}/ExtensionsDIDS`;
 
     possibleRequests = {
+        "post_portalBwdcClient_registrationRequest": `${this.portalBwdcClientBaseUrl}/bwdc/v1/accounts/register`,
         "handleBusinessAddressChanged": `${this.portalDspBaseUrl}/didsStatus/handleBusinessAddressChanged`,
         "get_cwlTest": "http://localhost:8088/ucaas-ap/v1/registry/CWLProfiles/1234",
         "put_cwlTest": "http://localhost:8181/ucaas-ap/v1/registry/businesses/101/services/cwl", // https://<ip:port>/ucaas-ap/v1/registry/businesses/<businessID>/services/cwl
@@ -32,7 +34,7 @@ class RequestSender extends Component {
     };
 
     state = {
-        selectedRequestId: "handleBusinessAddressChanged",
+        selectedRequestId: "post_portalBwdcClient_registrationRequest",
         theUrl: null,
         possibleRequests: this.possibleRequests
     };
@@ -85,6 +87,9 @@ class RequestSender extends Component {
             return;
         } else if (selectedRequestId.startsWith("patch_")) {
             this.executePatchRequest();
+            return;
+        } else if (selectedRequestId.startsWith("post_")) {
+            this.executePostRequest();
             return;
         }
 

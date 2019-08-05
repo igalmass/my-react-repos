@@ -8,6 +8,9 @@ class RequestBodyChooser extends Component {
     };
 
     allPossibleRequestBodys = {
+        post_registrationRequest: {
+            callerName: "my called name"
+        },
         put_Cwl_test: {
             "didForking": "ForkAllDIDs",
             "ringInterval": "10"
