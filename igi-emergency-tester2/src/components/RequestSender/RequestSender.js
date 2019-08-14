@@ -7,10 +7,12 @@ class RequestSender extends Component {
     portalDspBaseUrl = "http://localhost:9008/ucaas-ap/v1/registry";
     portalCpeBaseUrl = "http://localhost:9011/ucaas-ap/v1/registry";
     perstBaseUrl = "http://localhost:8184/ucaas-ap/v1/registry";
+    flowEngineBaseUrl = "http://localhost:8182/ucaas-ap/v1/registry";
     portalBwdcClientBaseUrl = "http://localhost:8082";
-    extensionDidsBaseUrl = `${this.perstBaseUrl}/ExtensionsDIDS`;
+    extensionDidsBaseUrl = `${this.perstBaseUrl}/ExtensionsDIDS/registry`;
 
     possibleRequests = {
+        "post_flowEngine_register": `${this.flowEngineBaseUrl}/DIDS/addressRegistrationRequest`,
         "post_portalBwdcClient_registrationRequest": `${this.portalBwdcClientBaseUrl}/bwdc/v1/accounts/register`,
         "handleBusinessAddressChanged": `${this.portalDspBaseUrl}/didsStatus/handleBusinessAddressChanged`,
         "get_cwlTest": "http://localhost:8088/ucaas-ap/v1/registry/CWLProfiles/1234",
@@ -34,7 +36,7 @@ class RequestSender extends Component {
     };
 
     state = {
-        selectedRequestId: "post_portalBwdcClient_registrationRequest",
+        selectedRequestId: "post_flowEngine_register",
         theUrl: null,
         possibleRequests: this.possibleRequests
     };

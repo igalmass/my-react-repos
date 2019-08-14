@@ -4,12 +4,29 @@ import React, {Component} from 'react';
 
 class RequestBodyChooser extends Component {
     state = {
-        selectedRequestBodyId: 'goodAddress_200_success'
+        selectedRequestBodyId: 'post_flowEngine_register'
     };
 
     allPossibleRequestBodys = {
-        post_registrationRequest: {
-            callerName: "my called name"
+        post_flowEngine_register: {
+            "registrationType": "register",
+            "lineId": "u-8jz6vk092"
+        },
+        post_bwdc_registrationRequest: {
+            "address": {
+                "addressLine1": "1124 PIKE ST",
+                "city": "SEATTLE",
+                "country": "US",
+                "houseNunber": "1124",
+                "houseSuffix": "ST",
+                "plusFour": "1924",
+                "stateCode": "WA",
+                "streetName": "PIKE",
+                "streetSuffix": "ST",
+                "zip": "98101"
+            },
+            "callerName": "My Caller 123",
+            "telephoneNumber": "4694820675"
         },
         put_Cwl_test: {
             "didForking": "ForkAllDIDs",
