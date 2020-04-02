@@ -8,15 +8,18 @@ class RequestSender extends Component {
     portalCpeBaseUrl = "http://localhost:9011/ucaas-ap/v1/registry";
     perstBaseUrl = "http://localhost:8184/ucaas-ap/v1/registry";
     flowEngineBaseUrl = "http://localhost:8182/ucaas-ap/v1/registry";
+    portalApiGwBaseUrl = "http://localhost:8181/ucaas-ap/v1/registry";
     portalBwdcClientBaseUrl = "http://localhost:8082";
     extensionDidsBaseUrl = `${this.perstBaseUrl}/ExtensionsDIDS/registry`;
 
     possibleRequests = {
+        "get_hss": `${this.portalApiGwBaseUrl}/hss/1234`,
         "post_flowEngine_register": `${this.flowEngineBaseUrl}/DIDS/addressRegistrationRequest`,
         "post_portalBwdcClient_registrationRequest": `${this.portalBwdcClientBaseUrl}/bwdc/v1/accounts/register`,
         "handleBusinessAddressChanged": `${this.portalDspBaseUrl}/didsStatus/handleBusinessAddressChanged`,
         "get_cwlTest": "http://localhost:8088/ucaas-ap/v1/registry/CWLProfiles/1234",
         "put_cwlTest": "http://localhost:8181/ucaas-ap/v1/registry/businesses/101/services/cwl", // https://<ip:port>/ucaas-ap/v1/registry/businesses/<businessID>/services/cwl
+        "get_portalWsgPersistence_hss": "http://localhost:8184/ucaas-ap/v1/registry/hss/101",
         "handleDspChanged": `${this.portalDspBaseUrl}/didsStatus/handleDspChanged`,
         "get_didsByBusinessId": this.get_DidsByBusinessId(),
         "patch_didById": this.getExtensionDidsForNumberUrl_ForGet(),
@@ -36,7 +39,7 @@ class RequestSender extends Component {
     };
 
     state = {
-        selectedRequestId: "post_flowEngine_register",
+        selectedRequestId: "get_portalWsgPersistence_hss",
         theUrl: null,
         possibleRequests: this.possibleRequests
     };
@@ -220,24 +223,40 @@ class RequestSender extends Component {
         this.props.setResponse(responseText);
     }
 
+    // getHeaders() {
+    //     let result = {
+    //         'Access-Control-Allow-Origin': '*',
+    //         "content-type": 'application/json'
+    //     };
+    // }
+
     executeGetRequest() {
         const url = this.state.possibleRequests[this.state.selectedRequestId];
         axios.get(url,
             {
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    "content-type": 'application/json'
-                }
+                headers: this.getHeaders()
             })
             .then(
                 response => this.handlePositiveResponse(response)
             )
             .catch(
                 error => {
+                    debugger;
                     this.extractResponseFromError(error);
                 });
     }
 
+    // 'ap-correlationid': 'MavenirAdmin/faac6b33-9c26-f595-3068-0fe818abd696_abc',
+    // 'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ1c2VyIjoiY29tcGFkbWluIiwicm9sZSI6IkVudGl0eUFkbWluIiwiaWF0IjoxNTc0MzI4Mzk5LCJleHAiOjE1NzQ5MzMxOTl9.BNmh3OsFqOABHXFwLJ7Fa-0AGlTCAth8Jydc-aLU8jU9I34mjeQOt5wlh8bScgBtWhWANgUYDQAZfmTR6hz0XGC2r9DYByq09cwV8GkXy9M6R3kCKJFTol3zi9BWXMYlqTG5Xe4IrcgjFQcYTfzZuhFKpOvXhAVwOJUlJVUcVbzrasBkr2FiqEpkzXFmKNcO-_2tajdYz3O_-jATZ5x7KSr64PnSvIxO98bKinfDs1-wo4wtya3hbPiVXXfcIe_JW1FgVTdIpn1gOO4yDQwMKPOHuZE_BpvEgxgKYVBdKKXiPhAVCduImcAf7Efjkl2Zhcj_N9z0taQeogLuZFlpyw',
+    getHeaders() {
+        return {
+            'Access-Control-Allow-Origin': '*',
+            "content-type": 'application/json',
+
+
+
+        };
+    }
 
     extractResponseFromError(error) {
         let responseText = error.message ? error.message : "Got error !";
